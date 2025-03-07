@@ -1,0 +1,17 @@
+notes-app/
+├── cmd/
+│   └── main.go
+├── internal/
+│   ├── domain/
+│   │   └── note.go
+│   ├── repository/
+│   │   └── note_repository.go
+│   ├── usecase/
+│   │   └── note_usecase.go
+│   └── delivery/
+│       └── http/
+│           └── note_handler.go
+├── pkg/
+│   └── database/
+│       └── postgres.go
+└── go.mod 

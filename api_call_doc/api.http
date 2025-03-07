@@ -1,0 +1,180 @@
+# Notes API Documentation
+@baseUrl = http://localhost:8081
+
+### Authentication APIs
+
+## Register User
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "password": "testpass123"
+}
+
+> Response (201 Created)
+{
+    "message": "User registered successfully"
+}
+
+## Login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "password": "testpass123"
+}
+
+> Response (200 OK)
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIs...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIs..."
+}
+
+## Refresh Token
+POST {{baseUrl}}/refresh
+Content-Type: application/json
+
+{
+    "refresh_token": "eyJhbGciOiJIUzI1NiIs..."
+}
+
+> Response (200 OK)
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIs...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIs..."
+}
+
+### Notes APIs (Protected Routes - Require Bearer Token)
+
+## Create Note
+POST {{baseUrl}}/notes
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "note_title": "Meeting Notes",
+    "content": "Discuss project timeline",
+    "is_done": "false"
+}
+
+> Response (201 Created)
+{
+    "id": 1,
+    "note_title": "Meeting Notes",
+    "content": "Discuss project timeline",
+    "is_done": "false",
+    "created_at": "2024-03-05T12:00:00Z",
+    "updated_at": "2024-03-05T12:00:00Z"
+}
+
+## Get All Notes
+GET {{baseUrl}}/notes
+Authorization: Bearer {{access_token}}
+
+> Response (200 OK)
+{
+    [
+        {
+            "id": 1,
+            "note_title": "Meeting Notes",
+            "content": "Discuss project timeline",
+            "is_done": "false",
+            "created_at": "2024-03-05T12:00:00Z",
+            "updated_at": "2024-03-05T12:00:00Z"
+        }
+    ]
+}
+
+## Get Note by ID
+GET {{baseUrl}}/notes/1
+Authorization: Bearer {{access_token}}
+
+> Response (200 OK)
+{
+    "id": 1,
+    "note_title": "Meeting Notes",
+    "content": "Discuss project timeline",
+    "is_done": "false",
+    "created_at": "2024-03-05T12:00:00Z",
+    "updated_at": "2024-03-05T12:00:00Z"
+}
+
+## Update Note
+PUT {{baseUrl}}/notes/1
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "note_title": "Updated Meeting Notes",
+    "content": "Updated timeline discussion",
+    "is_done": "true"
+}
+
+> Response (200 OK)
+{
+    "id": 1,
+    "note_title": "Updated Meeting Notes",
+    "content": "Updated timeline discussion",
+    "is_done": "true",
+    "created_at": "2024-03-05T12:00:00Z",
+    "updated_at": "2024-03-05T12:30:00Z"
+}
+
+## Delete Note
+DELETE {{baseUrl}}/notes/1
+Authorization: Bearer {{access_token}}
+
+> Response (200 OK)
+{
+    "message": "Note deleted successfully"
+}
+
+## Search Notes
+GET {{baseUrl}}/notes/qurey/meeting
+Authorization: Bearer {{access_token}}
+
+> Response (200 OK)
+{
+    [
+        {
+            "id": 1,
+            "note_title": "Meeting Notes",
+            "content": "Discuss project timeline",
+            "is_done": "false",
+            "created_at": "2024-03-05T12:00:00Z",
+            "updated_at": "2024-03-05T12:00:00Z"
+        }
+    ]
+}
+
+### Migration APIs (Protected Routes)
+
+## Get Migration History
+GET {{baseUrl}}/migrations
+Authorization: Bearer {{access_token}}
+
+> Response (200 OK)
+{
+    "total_migrations": 1,
+    "migrations": [
+        {
+            "id": 1,
+            "table_name": "notes",
+            "operation": "CREATE",
+            "description": "Initial notes table creation",
+            "schema_changes": [
+                {
+                    "column_name": "id",
+                    "new_type": "uint",
+                    "is_new": true
+                }
+                // ... other columns
+            ],
+            "executed_at": "2024-03-05T12:00:00Z",
+            "version": "20240305120000",
+            "status": "SUCCESS"
+        }
+    ]
+} 

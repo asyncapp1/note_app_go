@@ -1,0 +1,14 @@
+### GET request to example server
+GET http://localhost:8081/notes/
+
+###
+
+### Post request to example server
+POST http://localhost:8081/notes/
+
+Content-Type: application/json
+
+{"note_title":"4nd Note","content":"This is my 4nd test note","is_done":"true"}
+
+
+###
